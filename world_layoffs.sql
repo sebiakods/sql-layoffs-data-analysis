@@ -140,8 +140,39 @@ where row_num>1;
 
 
 
+-- standrize data 
+USE world_layoffs;
+SELECT company, TRIM(company)
+FROM layoffs_staging2;
+
+update layoffs_staging2
+set company= trim(company);
+
+SELECT industry, TRIM(industry)
+FROM layoffs_staging2;
+
+ select  *
+ from layoffs_staging2
+where industry  like 'crypto';
 
 
+update layoffs_staging2
+set industry = 'crypto'
+where industry like 'crupto%';
+
+
+ select  distinct country , trim(trailing '.' from country)
+  from layoffs_staging2
+order by 1 ;
+
+update layoffs_staging2
+set country = trim(trailing '.' from country)
+where country like 'united states%';
+ 
+ 
+ select *
+ from layoffs_staging2;
+ 
  
  
 
