@@ -60,3 +60,34 @@ order by 1 asc
 )
 select 'month', sum(total_off)over(order by 'month')as rolling_total
 from Rolling_total;
+
+
+
+
+
+
+
+
+
+
+SELECT DATABASE();
+USE world_layoffs;
+-- company ranking by year 
+select  company ,year('date'), sum(total_laid_off)
+from layoffs_staging2
+group by  company
+order by 3 desc ;
+
+WITH company_year (company, years, total_laid_off) AS (
+    SELECT
+        company,
+        YEAR(`date`),
+        SUM(total_laid_off)
+    FROM layoffs_staging2
+    GROUP BY company, YEAR(`date`)
+)
+SELECT *
+FROM company_year;
+
+
+
