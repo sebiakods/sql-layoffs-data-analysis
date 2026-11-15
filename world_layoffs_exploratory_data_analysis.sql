@@ -77,7 +77,7 @@ select  company ,year('date'), sum(total_laid_off)
 from layoffs_staging2
 group by  company
 order by 3 desc ;
-
+-- ranking top companies
 WITH company_year (company, years, total_laid_off) AS (
     SELECT
         company,
@@ -86,8 +86,10 @@ WITH company_year (company, years, total_laid_off) AS (
     FROM layoffs_staging2
     GROUP BY company, YEAR(`date`)
 )
-SELECT *
-FROM company_year;
-
-
-
+SELECT *,
+       DENSE_RANK() OVER (
+           PARTITION BY years
+           ORDER BY total_laid_off DESC
+       ) AS ranking
+FROM company_year
+WHERE years IS NOT NULL;
